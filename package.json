@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "socket.io": "^4.5.3"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "chat",
+  "description": "",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KaioGerhardt/chat-websocket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KaioGerhardt/chat-websocket/issues"
+  },
+  "homepage": "https://github.com/KaioGerhardt/chat-websocket#readme"
+}
