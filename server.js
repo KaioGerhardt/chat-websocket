@@ -20,6 +20,11 @@ app.use('/', function(req, resp){
     resp.render('index.html');
 });
 
+//verifica se o arquivo messages.txt existe, se nao existir cria o arquivo
+if(!fs.existsSync('./messages.txt')){
+  fs.writeFileSync('./messages.txt', '')
+}
+
 // guarda todas as mensagens (mensagens do txt)
 const dbMessages = fs.readFileSync('messages.txt', "utf8")
 let messages = []
@@ -34,12 +39,23 @@ io.on('connection', socket => {
     
     // recebe a mensage enviada pelo usuario, recebendo o mesmo evento do usuario
     socket.on("sendMessage", data => {
+      
+      // escreve as mensagens enviadas dos usuarios para o txt
+      fs.appendFileSync('messages.txt', JSON.stringify(data) + '\r\n')
+      
+      // manda as mensagens para todos os usuarios    
+      socket.broadcast.emit('receiveMessages', data)
+    })
+    
+    // recebe o envento para apagar as mensagens do arquivo
+    socket.on("deleteArchive", val => {
+      
+      if(val == true){
+        fs.unlinkSync("./messages.txt");
+        messages = []
+        socket.broadcast.emit('previousMessages', messages)
+      }
 
-        // escreve as mensagens enviadas dos usuarios para o txt
-        fs.appendFileSync('messages.txt', JSON.stringify(data) + '\r\n')
-
-        // manda as mensagens para todos os usuarios    
-        socket.broadcast.emit('receiveMessages', data)
     })
 })
 

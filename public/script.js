@@ -8,6 +8,13 @@ socket.on('receiveMessages', (message) => {
 
 // recebe as mensagens anteriores assim que se conectar (mensagens gravadas no txt)
 socket.on('previousMessages', (messages)=>{
+
+    // apaga as mensagens caso algum usuario tenha apagado o arquivo messages.txt
+    if(messages = []){
+        // apaga as mensagens do quadro
+        $("#messages").children().remove()
+    }
+
     for(message of messages){
         let text = JSON.parse(message)
         populationMessage(text)
@@ -62,6 +69,12 @@ $("#deleteMessages").on('click', event => {
         confirmButtonText: 'Sim, apagar!'
       }).then((result) => {
         if (result.isConfirmed) {
+
+            // apaga as mensagens do quadro
+            $("#messages").children().remove()
+
+            //envia o evento ao servidor para apagar as mensagens do txt
+            socket.emit('deleteArchive', true)
             Swal.fire(
                 'Deletado!',
                 'Todas as mensagens foram apagadas.',
