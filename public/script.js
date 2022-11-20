@@ -6,10 +6,11 @@ socket.on('receiveMessages', (message) => {
     populationMessage(message)
 });
 
-// recebe as mensagens anteriores assim que se conectar
+// recebe as mensagens anteriores assim que se conectar (mensagens gravadas no txt)
 socket.on('previousMessages', (messages)=>{
     for(message of messages){
-        populationMessage(message)
+        let text = JSON.parse(message)
+        populationMessage(text)
     }
 })
 

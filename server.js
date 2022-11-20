@@ -1,6 +1,8 @@
 // declarando as dependecias
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
+const readline = require('readline')
 
 // criando o servidor
 const app = express();
@@ -18,24 +20,40 @@ app.use('/', function(req, resp){
     resp.render('index.html');
 });
 
-// guarda todas as mensagens
+// guarda todas as mensagens (mensagens do txt)
+const dbMessages = fs.readFileSync('messages.txt', "utf8")
 let messages = []
+readFileByLine("messages.txt")
 
 // conexão do usuario com o servidor
 io.on('connection', socket => {
     console.log("conect:" + socket.id)
 
     // envia as mensagens anteriores ao usuario recem conectado
-    socket.emit('previousMessages', messages    )
-
+    socket.emit('previousMessages', messages)
+    
     // recebe a mensage enviada pelo usuario, recebendo o mesmo evento do usuario
     socket.on("sendMessage", data => {
-        messages.push(data)
+
+        // escreve as mensagens enviadas dos usuarios para o txt
+        fs.appendFileSync('messages.txt', JSON.stringify(data) + '\r\n')
 
         // manda as mensagens para todos os usuarios    
         socket.broadcast.emit('receiveMessages', data)
     })
 })
 
+// funcao para ler o arquivo linha a linha
+async function readFileByLine(file) {
+    const fileStream = fs.createReadStream(file);
+    const rl = readline.createInterface({
+      input: fileStream,
+      crlfDelay: Infinity
+    });
+    for await (const line of rl) {
+      messages.push(line);
+    }
+   
+}
 // definindo a porta e o ip que o servidor irá rodar
 server.listen(25000, '127.0.0.50')
