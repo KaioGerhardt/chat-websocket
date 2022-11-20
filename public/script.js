@@ -22,6 +22,14 @@ $("#chat").submit(event =>{
     var author = $("#username").val();
     var message = $("#message").val();
 
+    if(author == undefined ||  author == ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Favor, digite um username para continuar!',
+        })
+    }
+
     // envia a mensagem do usuario por meio de um objeto, caso o mesmo tenha informado a mensagem e seu nome de usuario
     if(author.length > 0 && message.length > 0){
 
@@ -37,6 +45,30 @@ $("#chat").submit(event =>{
         // envia o objeto contendo a mensagem e o autor para o socket (servidor)
         socket.emit("sendMessage", objectMessage)
     }
+})
+
+// funcao para escluir as mensagens do arquivo messages.txt
+$("#deleteMessages").on('click', event => {
+    event.preventDefault();
+
+    Swal.fire({
+        title: 'Deseja apagar as mensagens?',
+        text: "Todas as mensagens serão apagadas definitivamente!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Sim, apagar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire(
+                'Deletado!',
+                'Todas as mensagens foram apagadas.',
+                'success'
+            )
+        }
+      })
 })
 
 function populationMessage(message){

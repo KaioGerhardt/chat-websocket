@@ -23,6 +23,5 @@
   "bugs": {
     "url": "https://github.com/KaioGerhardt/chat-websocket/issues"
   },
-  "homepage": "https://github.com/KaioGerhardt/chat-websocket#readme",
-  "devDependencies": {}
+  "homepage": "https://github.com/KaioGerhardt/chat-websocket#readme"
 }
