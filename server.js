@@ -72,4 +72,4 @@ async function readFileByLine(file) {
    
 }
 // definindo a porta e o ip que o servidor irá rodar
-server.listen(25000, '127.0.0.50')
+server.listen(process.env.PORT)
